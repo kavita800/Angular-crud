@@ -1,0 +1,74 @@
+<div class="container">
+    <h1>Angular CRUD</h1>
+  
+    <button (click)="open(content, '')" class="btn btn-success">Create New Post</button>
+    <ng-template #content let-modal>
+      <form class="needs-validation" [formGroup]="form" (ngSubmit)="submit($event)">
+          <div class="modal-header">
+              <h5 class="modal-title f-w-600" id="exampleModalLabel">{{id?'Edit Post':'Add Post'}}</h5>
+              <button type="button" class="close" aria-label="Close"
+                  (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="form">
+                <div class="form-group">
+                  <label for="validationCustom01" class="mb-1">Post ID :</label>
+                  <input class="form-control" 
+                  formControlName="id" id="validationCustom01" type="text" (change)="onChange('id',$event.target.value)">
+                  <div *ngIf="f.id.touched && f.id.invalid" class="alert alert-danger">
+                    <div *ngIf="f.id.errors.required">Post ID is required.</div>
+                </div>
+              </div>
+                  <div class="form-group">
+                      <label for="validationCustom01" class="mb-1">Title :</label>
+                      <input class="form-control" 
+                      formControlName="title" id="validationCustom01" type="text" (change)="onChange('title',$event.target.value)">
+                      <div *ngIf="f.title.touched && f.title.invalid" class="alert alert-danger">
+                        <div *ngIf="f.title.errors.required">Title is required.</div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-0">
+                      <label for="customSwitches" class="col-form-label"> Body :</label>
+                      <!-- <div class="custom-control custom-switch"> -->
+                          <textarea 
+                            formControlName="body"
+                            id="body" 
+                            type="text" 
+                            class="form-control"
+                            (change)="onChange('body',$event.target.value)">
+                        </textarea>
+                        <div *ngIf="(f.body.touched && f.body.invalid) && f.body.errors.required" class="alert alert-danger">
+                          <div *ngIf="f.body.errors.required">Body is required.</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" >Save</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal"
+              (click)="modal.dismiss('Cross click')">Close</button>
+      </div>
+  </form>
+    </ng-template>
+    
+    <table class="table table-bordered">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Body</th>
+        <th width="220px">Action</th>
+      </tr>
+      <tr *ngFor="let post of posts">
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.body }}</td>
+        <td>
+          <a href="#" [routerLink]="['/post/', post.id, 'view']" class="btn btn-info">View</a>
+          <button (click)="open(content, post.id)" class="btn btn-primary">Edit</button>
+          <button type="button" (click)="deletePost(post.id)" class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </table>
+ </div>
